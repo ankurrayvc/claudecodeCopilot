@@ -1,5 +1,8 @@
 /**
- * MCP Server — Employee Training + Claude Terminal
+ * MCP Server — Employee Training
+ *
+ * Registers the training-media tool and its UI resource.
+ * The tool recommends AI/ML courses with embedded MS Learn video previews.
  */
 import {
   registerAppResource,
@@ -10,14 +13,19 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult, ReadResourceResult } from "@modelcontextprotocol/sdk/types.js";
 import fs from "node:fs/promises";
 import path from "node:path";
+
 import { z } from "zod";
 
 import { trainingMediaData } from "./mock-data/training-media.js";
 
+// Works both from source (server.ts) and compiled (dist/server.js)
 const DIST_DIR = import.meta.filename.endsWith(".ts")
   ? path.join(import.meta.dirname, "dist", "ui")
   : path.join(import.meta.dirname, "ui");
 
+/**
+ * Helper to register a tool + its corresponding resource in one call.
+ */
 function registerToolWithUI<T extends z.ZodRawShape>(
   server: McpServer,
   name: string,
@@ -46,6 +54,7 @@ function registerToolWithUI<T extends z.ZodRawShape>(
       annotations: { readOnlyHint: true },
       _meta: { ui: { resourceUri } },
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handler as any,
   );
 
@@ -59,7 +68,6 @@ function registerToolWithUI<T extends z.ZodRawShape>(
         path.join(DIST_DIR, resourceFileName),
         "utf-8",
       );
-
       return {
         contents: [
           {
@@ -74,12 +82,18 @@ function registerToolWithUI<T extends z.ZodRawShape>(
   );
 }
 
+/**
+ * Creates a new MCP server instance with all tools and resources registered.
+ */
 export function createServer(): McpServer {
   const server = new McpServer({
-    name: "Employee Training and Claude Terminal MCP App Server",
+    name: "Employee Training — MCP App Server",
     version: "1.0.0",
   });
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // Tool: Training Media
+  // ─────────────────────────────────────────────────────────────────────────
   registerToolWithUI(
     server,
     "training-media",
@@ -93,18 +107,17 @@ export function createServer(): McpServer {
       const query = args.query?.toLowerCase();
       let candidates = trainingMediaData.courses;
 
+      // Filter by query if provided
       if (query) {
         const filtered = candidates.filter(
           (c) =>
             c.title.toLowerCase().includes(query) ||
             c.description.toLowerCase().includes(query),
         );
-
-        if (filtered.length > 0) {
-          candidates = filtered;
-        }
+        if (filtered.length > 0) candidates = filtered;
       }
 
+      // Randomly pick one course
       const course = candidates[Math.floor(Math.random() * candidates.length)];
 
       return {
@@ -123,46 +136,6 @@ export function createServer(): McpServer {
     {
       csp: {
         frameDomains: ["https://learn-video.azurefd.net"],
-      },
-    },
-  );
-
-  registerToolWithUI(
-    server,
-    "claude-terminal",
-    "Claude Code Terminal",
-    "Open an interactive Claude Code terminal widget. Use this tool whenever the user asks to open Claude Code, use Claude terminal, run Claude Code, or work in an interactive terminal.",
-    "claude-terminal.html",
-    {
-      note: z.string().optional().describe("Optional note or task for the Claude terminal session"),
-    },
-    (args): CallToolResult => {
-      const note = args.note || "Claude terminal session opened.";
-
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Opening Claude Code terminal. ${note}`,
-          },
-        ],
-        structuredContent: {
-          status: "ready",
-          message: note,
-          websocketPath: "/terminal-ws",
-        } as unknown as Record<string, unknown>,
-      };
-    },
-    {
-      csp: {
-        connectDomains: [
-          "https://snowcap-refract-backlight.ngrok-free.dev",
-          "wss://snowcap-refract-backlight.ngrok-free.dev",
-        ],
-        resourceDomains: [
-          "https://cdn.jsdelivr.net",
-          "https://cdnjs.cloudflare.com",
-        ],
       },
     },
   );
