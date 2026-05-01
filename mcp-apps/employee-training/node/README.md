@@ -82,6 +82,16 @@ If you're customizing tool definitions, use the M365 Agents Toolkit with your MC
 - Add new tools and UI widgets
 - Extend the course recommendation experience
 
+## Project Story
+
+This project began as a learning experiment. I found a sample concept on LinkedIn that showed how to build an MCP-powered interactive UI inside Copilot, but the original sample did not include a usable license for direct reuse. Rather than copy the exact code, I decided to recreate the project from scratch using the same architecture and goals.
+
+I rebuilt the experience by combining a stateless MCP server with React and Fluent UI, focusing on a training recommendation tool called `training-media`. The result is a sample that can receive course queries, select relevant training content from `mock-data/training-media.ts`, and render a rich inline entity card or fullscreen course view with embedded video.
+
+Along the way, I faced practical problems: the upstream repository was read-only for my GitHub user, the initial push failed with permission errors, and SSH authentication needed proper key handling. I solved this by adding my fork as a remote and preparing the repo so that the changes could be pushed under my own account.
+
+This story is part of the project: taking an idea, understanding the required components, and building the system in a way that is completely mine. The architecture, data flow, and implementation details documented in this README reflect that rebuild and the decisions I made while creating a working MCP sample.
+
 ## Project Update Log
 
 ### What Was Done
