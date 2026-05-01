@@ -1,161 +1,239 @@
-# Employee Training (MCP App Server)
+# Machine Learning Project – End‑to‑End Implementation
 
-## Overview
+## 📌 Project Overview
 
-This sample is a **Model Context Protocol (MCP) App Server** that recommends employee training courses and renders interactive course previews with embedded video. It uses React, Fluent UI v9, and the MCP Apps SDK to expose a tool UI for Copilot-style tool invocation and widget rendering.
+This project demonstrates a complete end‑to‑end Machine Learning workflow, starting from data preprocessing to model training, evaluation, and final predictions. The goal of this project is to build a reliable and scalable ML model that can learn patterns from data and make accurate predictions on unseen data.
 
-Included tool:
+The project focuses on:
+- Understanding the dataset
+- Cleaning and preprocessing data
+- Feature engineering
+- Model selection and training
+- Performance evaluation
+- Optimization techniques
 
-- `training-media` — Course recommendation with inline entity card and fullscreen video experience
+---
 
-![Inline card](demos/screenshots/learningmedia-inline.png)
+## 🧠 What is Machine Learning?
 
-![Side-by-side view](demos/screenshots/learningmedia-sbs.png)
+Machine Learning is a subset of Artificial Intelligence that enables systems to learn from data and improve performance without being explicitly programmed. Instead of hard‑coded rules, the model identifies patterns from historical data and uses them to make predictions or decisions.
 
-### Key features
+### Types of Machine Learning Used
+| Type | Description | Example Algorithms |
+|------|-------------|-------------------|
+| Supervised Learning | Learns from labeled data | Logistic Regression, Random Forest, SVM |
+| Unsupervised Learning | Finds hidden patterns | K-Means, PCA |
+| Semi-supervised | Mix of labeled + unlabeled | Self-training |
 
-- Course recommendation by topic
-- Compact inline course cards with video preview
-- Fullscreen course detail view with modules, instructor info, and related content
-- Sample data in `mock-data/training-media.ts`
+---
 
-## Sample prompts
+## 🗂️ Project Structure
 
-| Prompt | Expected behavior |
-|---|---|
-| Recommend a training course about AI agents. | Calls `training-media` with query `agents` and renders a matching course card. |
-| Show me a course on Semantic Kernel. | Calls `training-media` with query `semantic kernel` and renders the course widget. |
-| What training is available for Azure AI? | Calls `training-media` with query `azure ai` and returns a recommended course. |
-| Suggest a learning resource for building copilots. | Calls `training-media` with query `copilot` and displays the course card. |
+```
+├── data/
+│   ├── raw_data.csv
+│   └── processed_data.csv
+├── notebooks/
+│   └── exploration.ipynb
+├── src/
+│   ├── preprocessing.py
+│   ├── model.py
+│   └── evaluation.py
+├── models/
+│   └── trained_model.pkl
+├── results/
+│   └── metrics.txt
+├── requirements.txt
+└── README.md
+```
 
-## Prerequisites
+---
 
-- Node.js 20+
-- npm 10+
+## ⚙️ Technologies Used
 
-## Run locally
+| Tool | Purpose |
+|------|---------|
+| Python 3.x | Core programming language |
+| NumPy | Numerical computations |
+| Pandas | Data manipulation and analysis |
+| Scikit-learn | ML algorithms and utilities |
+| Matplotlib / Seaborn | Data visualization |
+| Jupyter Notebook | Interactive exploration |
+| Pickle | Model serialization |
 
-From `node/`:
+---
 
+## 🔍 Dataset Description
+
+- The dataset contains structured tabular data.
+- Includes numerical and categorical features.
+- Missing values and outliers were present and handled during preprocessing.
+
+### Data Quality Issues Addressed
+| Issue | Handling Strategy |
+|-------|------------------|
+| Missing values | Mean/Median/Mode imputation |
+| Outliers | IQR-based detection and removal |
+| Duplicates | Dropped exact duplicate rows |
+| Class imbalance | Class weights / resampling |
+| Inconsistent formats | Standardized during preprocessing |
+
+---
+
+## 🛠️ Steps Followed to Complete the Project
+
+### 1. Data Preprocessing
+- Removed duplicate records
+- Handled missing values using mean/median/mode
+- Encoded categorical variables (Label Encoding / One-Hot Encoding)
+- Scaled numerical features using StandardScaler
+
+### 2. Exploratory Data Analysis (EDA)
+- Checked feature distributions
+- Identified correlations using heatmaps
+- Visualized outliers using box plots
+- Removed irrelevant features
+
+> 💡 **Tip**: Always do EDA before modeling. It saves hours of debugging later.
+
+### 3. Feature Engineering
+- Created new meaningful features from existing ones
+- Dropped highly correlated columns (correlation > 0.95)
+- Selected top features using feature importance from Random Forest
+
+### 4. Model Training
+
+Trained and compared multiple algorithms:
+
+| Algorithm | Strengths | Weaknesses |
+|-----------|-----------|------------|
+| Logistic Regression | Fast, interpretable | Linear only |
+| Decision Tree | Easy to visualize | Prone to overfitting |
+| Random Forest | High accuracy, robust | Slower, less interpretable |
+| SVM | Works well in high dimensions | Slow on large datasets |
+
+### 5. Model Evaluation
+
+Metrics used:
+- **Accuracy** — Overall correctness
+- **Precision** — Of predicted positives, how many were correct
+- **Recall** — Of actual positives, how many were found
+- **F1-Score** — Harmonic mean of Precision and Recall
+- **Confusion Matrix** — Visual breakdown of predictions
+
+> 💡 **When to use which metric**: Use F1-Score when classes are imbalanced. Use Accuracy only when classes are balanced.
+
+---
+
+## 🚀 Hacks / Tricks Used to Improve Performance
+
+> These are **smart optimizations**, not shortcuts or cheating.
+
+- ✅ **Baseline First**: Trained a simple model first to set a performance baseline.
+- ✅ **Feature Scaling**: Improved model convergence and accuracy.
+- ✅ **Hyperparameter Tuning**: Used GridSearchCV to find optimal parameters.
+- ✅ **Train‑Validation Split**: Prevented overfitting.
+- ✅ **Class Imbalance Handling**: Used class weights / resampling.
+- ✅ **Dropped Noisy Features**: Reduced overfitting.
+- ✅ **Cross‑Validation**: Ensured model stability across different data splits.
+- ✅ **Saved Best Model Only**: Avoided unnecessary storage and confusion.
+- ✅ **Early Stopping** *(if using Neural Networks)*: Stops training when validation loss stops improving.
+- ✅ **Pipeline Usage**: Used `sklearn.pipeline.Pipeline` to chain preprocessing + model to prevent data leakage.
+- ✅ **Random State Fixed**: Set `random_state=42` everywhere for reproducibility.
+
+---
+
+## 📈 Results
+
+- Achieved high accuracy on test data.
+- Model generalizes well to unseen data.
+- Overfitting minimized through regularization and validation.
+
+### Sample Metrics Table
+| Model | Accuracy | Precision | Recall | F1-Score |
+|-------|----------|-----------|--------|----------|
+| Logistic Regression | ~% | ~% | ~% | ~% |
+| Decision Tree | ~% | ~% | ~% | ~% |
+| Random Forest | ~% | ~% | ~% | ~% |
+| SVM | ~% | ~% | ~% | ~% |
+
+> Replace `~%` with your actual results after running the model.
+
+---
+
+## ▶️ How to Run the Project
+
+### 1. Clone the repository
 ```bash
-npm install
-npm run dev
+git clone https://github.com/your-username/your-project-name.git
+cd your-project-name
 ```
 
-- This launches the app server and rebuilds UI assets on file changes.
-- The local MCP endpoint is:
-
-```text
-http://localhost:3001/mcp
-```
-
-### Build and serve for production
-
+### 2. Create a virtual environment (recommended)
 ```bash
-npm install
-npm run build
-npm run serve
+python -m venv venv
+source venv/bin/activate        # Mac/Linux
+venv\Scripts\activate           # Windows
 ```
 
-## Expose with a tunnel
-
-Example using ngrok:
-
+### 3. Install dependencies
 ```bash
-ngrok http 3001
+pip install -r requirements.txt
 ```
 
-Then use the generated public URL with `/mcp` appended as your MCP spec endpoint.
+### 4. Run the notebook
+```bash
+jupyter notebook notebooks/exploration.ipynb
+```
 
-## Test in Copilot / Teams
+### 5. Train the model
+```bash
+python src/model.py
+```
 
-1. Open `appPackage/ai-plugin.json`.
-2. Replace the MCP spec URL with your local tunnel endpoint.
-3. Zip the `appPackage` folder.
-4. Sideload the package into Teams.
+### 6. Evaluate the model
+```bash
+python src/evaluation.py
+```
 
-If you're customizing tool definitions, use the M365 Agents Toolkit with your MCP server URL.
+---
 
-## Next steps
+## 🔮 Future Improvements
 
-- Customize `mock-data/training-media.ts`
-- Add new tools and UI widgets
-- Extend the course recommendation experience
+- [ ] Try deep learning models (Neural Networks, LSTM)
+- [ ] Deploy model as a REST API using FastAPI or Flask
+- [ ] Add a real-time prediction interface
+- [ ] Automate retraining pipeline when new data arrives
+- [ ] Add SHAP values for model explainability
+- [ ] Containerize with Docker for easy deployment
+- [ ] Add CI/CD pipeline for automated testing
 
-## Project Story
+---
 
-This project began as a learning experiment. I found a sample concept on LinkedIn that showed how to build an MCP-powered interactive UI inside Copilot, but the original sample did not include a usable license for direct reuse. Rather than copy the exact code, I decided to recreate the project from scratch using the same architecture and goals.
+## 🤝 Contributing
 
-I rebuilt the experience by combining a stateless MCP server with React and Fluent UI, focusing on a training recommendation tool called `training-media`. The result is a sample that can receive course queries, select relevant training content from `mock-data/training-media.ts`, and render a rich inline entity card or fullscreen course view with embedded video.
+Contributions are welcome! Please follow these steps:
 
-Along the way, I faced practical problems: the upstream repository was read-only for my GitHub user, the initial push failed with permission errors, and SSH authentication needed proper key handling. I solved this by adding my fork as a remote and preparing the repo so that the changes could be pushed under my own account.
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m "Add your feature"`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Open a Pull Request
 
-This story is part of the project: taking an idea, understanding the required components, and building the system in a way that is completely mine. The architecture, data flow, and implementation details documented in this README reflect that rebuild and the decisions I made while creating a working MCP sample.
+---
 
-## Project Update Log
+## 📄 License
 
-### What Was Done
-- Updated the README.md file with current project instructions, including accurate local run commands (`npm run dev`), production build steps (`npm run build && npm run serve`), and tunnel exposure using ngrok.
-- Committed the changes locally with message: "Update README with current local run instructions and project info".
-- Attempted to push the commit to a personal GitHub fork.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-### How It Was Done
-- Read the existing README.md to understand its structure.
-- Used terminal commands to rewrite the entire file content with updated sections, preserving screenshots and key features.
-- Verified the package.json for accurate scripts and dependencies.
-- Added the fork remote (`https://github.com/ankurrayvc/claudecodeCopilot.git`) to the git repository.
-- Attempted push using HTTPS, then explored SSH options.
+---
 
-### Problems Faced
-- Initial push to the original repository (`https://github.com/microsoft/mcp-interactiveUI-samples.git`) failed with "Permission denied to ankurray561" (403 error), as the user lacks write access to the upstream repo.
-- HTTPS push to the fork also failed with the same permission error, indicating GitHub authentication was still using the wrong account credentials.
-- SSH push attempts were blocked by passphrase prompts for the SSH key (`~/.ssh/id_ed25519`), and the SSH agent had no loaded identities.
+## 👤 Author
 
-### How Problems Were Solved
-- Identified the need to push to a personal fork instead of the upstream repository.
-- Configured a new git remote named "fork" pointing to the user's fork URL.
-- For SSH issues, suggested loading the SSH key with `ssh-add ~/.ssh/id_ed25519` and retrying the push.
-- As a fallback, recommended using HTTPS with correct GitHub credentials or a personal access token (PAT) for authentication.
+**Your Name**
+- GitHub: [@your-username](https://github.com/your-username)
+- LinkedIn: [your-linkedin](https://linkedin.com/in/your-linkedin)
 
-### Complete Architecture
-The project is an MCP (Model Context Protocol) App Server built with Node.js, Express, and TypeScript. It follows a stateless HTTP transport model for MCP communication.
+---
 
-#### Key Components:
-- **Server Entry Point** (`main.ts`): Initializes the Express app with MCP SDK, sets up CORS, and handles MCP requests on `/mcp` endpoint. Uses StreamableHTTPServerTransport for stateless sessions.
-- **Server Logic** (`server.ts`): Defines the MCP server instance, registers tools (e.g., `training-media`), and handles tool calls.
-- **Tool Implementation** (`src/training-media/`): Contains the `training-media` tool logic, which recommends courses based on query, and renders UI widgets using React and Fluent UI.
-- **UI Components** (`src/training-media/App.tsx`, `src/shared/FluentWrapper.tsx`): React components for course cards, video embeds, and fullscreen views. Built with Vite for bundling into single-file HTML.
-- **Data Layer** (`mock-data/training-media.ts`): Static JSON data for courses, including titles, descriptions, videos, instructors, etc.
-- **Build System**: Uses Vite for UI bundling (`build-ui.mjs`), TypeScript compilation, and concurrent dev server with watch mode.
-- **Package Structure**: `appPackage/` contains Teams/Copilot integration files (manifest, AI plugin JSON).
-
-#### Technologies:
-- **Backend**: Node.js, Express, MCP SDK (@modelcontextprotocol/sdk), TypeScript.
-- **Frontend**: React 19, Fluent UI v9 (@fluentui/react-components), Vite for build.
-- **Dev Tools**: tsx for watch mode, concurrently for parallel tasks, cross-env for environment variables.
-- **Deployment**: Stateless HTTP server, suitable for tunneling (ngrok) or cloud hosting.
-
-### Data Flow
-1. **User Prompt in Copilot/Teams**: User enters a prompt like "Recommend a training course about AI agents."
-2. **MCP Tool Invocation**: Copilot calls the MCP server at the configured spec URL (e.g., `https://tunnel-url/mcp`).
-3. **Server Request Handling**: Express app receives POST request on `/mcp`, creates a new McpServer instance per request (stateless).
-4. **Tool Execution**: Server routes to `training-media` tool, which:
-   - Parses query ("agents").
-   - Filters/recommends courses from `mock-data/training-media.ts`.
-   - Generates UI widget data (inline card or fullscreen view).
-5. **UI Rendering**: Tool returns MCP response with UI component (React JSX serialized), including embedded video URLs, metadata, and interactive elements.
-6. **Client Display**: Copilot renders the widget inline or in fullscreen, allowing user interaction (e.g., enroll button, video play).
-7. **Response Closure**: Transport closes after response; no session persistence.
-
-#### In-Depth Flow Details:
-- **Stateless Design**: Each request is independent; no shared state between calls.
-- **UI Bundling**: Vite bundles React components into single HTML files (`ui/training-media.html`), served statically or embedded in responses.
-- **Error Handling**: Server catches errors, returns JSON-RPC error responses (code -32603).
-- **CORS and Security**: CORS enabled for cross-origin requests; no authentication in this sample.
-- **Performance**: UI assets rebuilt on changes in dev mode; production builds are optimized.
-
-### Additional Notes
-- **File Structure**: Root has `main.ts`, `server.ts`, `package.json`; `src/` for UI code; `mock-data/` for sample data; `appPackage/` for integration.
-- **Customization**: Easily extend by adding tools in `server.ts`, updating data in `mock-data/`, or modifying UI in `src/`.
-- **Testing**: Local dev with `npm run dev`, tunnel with ngrok, sideload in Teams for end-to-end testing.
-- **Future Enhancements**: Add real API integrations, user authentication, database persistence, or more complex UI interactions.
+> ⭐ If you found this project helpful, please give it a star on GitHub!
